@@ -1,17 +1,10 @@
 const express = require("express"); //  Imports the Express framework
+const { getUsers, getUser, createUser } = require("../controllers/users");
 
 const router = express.Router(); // Create a new router instance
 
-router.get("/users", (req, res) => {
-  //Define route for getting all users
-});
-
-router.get("/users/:userId", (req, res) => {
-  //Define route for getting a specific user by ID
-});
-
-router.post("/users", (req, res) => {
-  //Define route for creating a new user
-});
+router.get("/", getUsers);
+router.get("/:userId", getUser);
+router.post("/", createUser);
 
 module.exports = router;

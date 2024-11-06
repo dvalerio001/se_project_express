@@ -1,7 +1,6 @@
 const express = require("express"); //  Imports the Express framework
 const mongoose = require("mongoose"); //Import mongoose
-const userRouter = require("./routes/users");
-const clothingItemRouter = require("./routes/clothingItems");
+const mainRouter = require("./routes");
 
 const app = express(); //  Creates an Express application instance
 
@@ -14,8 +13,14 @@ mongoose
   })
   .catch(console.error); //Connect to MongoDB server
 
-app.use("/", userRouter);
-app.use("/", clothingItemRouter);
+app.use(express.json());
+app.use((req, res, next) => {
+  req.user = {
+    _id: "672af7b158187b3c6c88807f", //from postman test
+  };
+  next();
+});
+app.use("/", mainRouter);
 
 // Handle 404 errors for non-existent routes
 app.use((req, res) => {
