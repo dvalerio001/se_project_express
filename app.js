@@ -1,22 +1,22 @@
 const express = require("express"); //  Imports the Express framework
-const mongoose = require("mongoose"); //Import mongoose
+const mongoose = require("mongoose"); // Import mongoose
 const mainRouter = require("./routes");
 
 const app = express(); //  Creates an Express application instance
 
-const { PORT = 3001 } = process.env; //Sets the port using environment variables with a default of 3001
+const { PORT = 3001 } = process.env; // Sets the port using environment variables with a default of 3001
 
 mongoose
   .connect("mongodb://127.0.0.1:27017/wtwr_db")
   .then(() => {
     console.log("Connected to MongoDB");
   })
-  .catch(console.error); //Connect to MongoDB server
+  .catch(console.error); // Connect to MongoDB server
 
 app.use(express.json());
 app.use((req, res, next) => {
   req.user = {
-    _id: "672af7b158187b3c6c88807f", //from postman test
+    _id: "672af7b158187b3c6c88807f", // from postman test
   };
   next();
 });
