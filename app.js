@@ -1,5 +1,6 @@
 const express = require("express"); //  Imports the Express framework
 const mongoose = require("mongoose"); // Import mongoose
+const { NOT_FOUND } = require("./utils/errors");
 const mainRouter = require("./routes");
 
 const app = express(); //  Creates an Express application instance
@@ -25,7 +26,7 @@ app.use("/", mainRouter);
 // Handle 404 errors for non-existent routes
 app.use((req, res) => {
   // Middleware for handling non-existent routes
-  res.status(404).send({
+  res.status(NOT_FOUND).send({
     // Send 404 status code and error message
     message: "Requested resource not found",
   });
