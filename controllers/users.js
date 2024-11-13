@@ -1,5 +1,11 @@
+const bcrypt = require("bcryptjs");
 const User = require("../models/user");
-const { BAD_REQUEST, NOT_FOUND, SERVER_ERROR } = require("../utils/errors");
+const {
+  BAD_REQUEST,
+  NOT_FOUND,
+  SERVER_ERROR,
+  CONFLICT,
+} = require("../utils/errors");
 
 const getUsers = (req, res) => {
   User.find({})
@@ -33,13 +39,22 @@ const getUser = (req, res) => {
 };
 
 const createUser = (req, res) => {
-  const { name, avatar } = req.body;
+  const { name, avatar, email, password } = req.body;
 
-  User.create({ name, avatar })
-    .then((user) => res.send(user))
+  bcrypt
+    .hash(password, 10)
+    .then((hash) => User.create({ name, avatar, email, password: hash }))
+    .then((user) => {
+      const userData = user.toObject();
+      delete userData.password;
+      res.send(userData);
+    })
     .catch((err) => {
       console.error(err);
-      if (err.name === "ValidationError") {
+      if (err.code === 11000) {
+        //duplicate email handling
+        res.status(CONFLICT).send({ message: "Email address already exists" });
+      } else if (err.name === "ValidationError") {
         res.status(BAD_REQUEST).send({ message: "Invalid data provided" });
       } else {
         res

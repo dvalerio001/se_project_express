@@ -6,4 +6,5 @@ module.exports = {
   BAD_REQUEST,
   NOT_FOUND,
   SERVER_ERROR,
+  CONFLICT: 409,
 };
