@@ -2,6 +2,7 @@ const express = require("express"); //  Imports the Express framework
 const mongoose = require("mongoose"); // Import mongoose
 const { NOT_FOUND } = require("./utils/errors");
 const mainRouter = require("./routes");
+const cors = require("cors"); // Import cors
 
 const app = express(); //  Creates an Express application instance
 
@@ -15,6 +16,7 @@ mongoose
   .catch(console.error); // Connect to MongoDB server
 
 app.use(express.json());
+app.use(cors());
 
 app.use("/", mainRouter);
 
