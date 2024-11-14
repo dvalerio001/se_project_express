@@ -24,7 +24,7 @@ const getUsers = (req, res) => {
 const getUser = (req, res) => {
   const { userId } = req.params;
 
-  User.findById(userId)
+  return User.findById(userId)
     .orFail()
     .then((user) => res.send(user))
     .catch((err) => {
@@ -44,15 +44,15 @@ const getUser = (req, res) => {
 const createUser = (req, res) => {
   const { name, avatar, email, password } = req.body;
 
-  //Check for missing required fields
+  // Check for missing required fields
   if (!email || !password || !name || !avatar) {
     return res.status(BAD_REQUEST).send({
       message: "All fields are required",
     });
   }
 
-  //check if user exists
-  User.findOne({ email })
+  // check if user exists
+  return User.findOne({ email })
     .then((existingUser) => {
       if (existingUser) {
         return res.status(CONFLICT).send({
@@ -71,7 +71,7 @@ const createUser = (req, res) => {
           })
         )
         .then((user) => {
-          return res.status(201).send({
+          res.status(201).send({
             name: user.name,
             avatar: user.avatar,
             email: user.email,
@@ -95,7 +95,7 @@ const createUser = (req, res) => {
 const login = (req, res) => {
   const { email, password } = req.body;
 
-  //Check for missing required fields
+  // Check for missing required fields
   if (!email || !password) {
     return res.status(BAD_REQUEST).json({
       message: "Email and password are required",
