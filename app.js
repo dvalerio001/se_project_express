@@ -15,12 +15,7 @@ mongoose
   .catch(console.error); // Connect to MongoDB server
 
 app.use(express.json());
-app.use((req, res, next) => {
-  req.user = {
-    _id: "672af7b158187b3c6c88807f", // from postman test
-  };
-  next();
-});
+
 app.use("/", mainRouter);
 
 // Handle 404 errors for non-existent routes
