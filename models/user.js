@@ -34,13 +34,16 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
+    select: false,
   },
 });
+
 userSchema.statics.findUserByCredentials = function findUserByCredentials(
   email,
   password
 ) {
-  return this.findOne({ email }) // this is the User model
+  return this.findOne({ email })
+    .select("+password") // this is the User model
     .then((user) => {
       //reject if user is not found
       if (!user) {
