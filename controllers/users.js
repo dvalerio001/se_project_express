@@ -14,9 +14,9 @@ const createUser = (req, res) => {
   const { name, avatar, email, password } = req.body;
 
   // Check for missing required fields
-  if (!email || !password || !name || !avatar) {
+  if (!email || !password || !name) {
     return res.status(BAD_REQUEST).send({
-      message: "All fields are required",
+      message: "Name, email, and password are required",
     });
   }
 
@@ -34,9 +34,9 @@ const createUser = (req, res) => {
         .then((hash) =>
           User.create({
             name,
-            avatar,
             email,
             password: hash,
+            ...(avatar && { avatar }), // Only include avatar if it exists
           })
         )
         .then((user) => {
