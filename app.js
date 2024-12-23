@@ -1,6 +1,10 @@
+require("dotenv").config();
 const express = require("express"); //  Imports the Express framework
 const mongoose = require("mongoose"); // Import mongoose
 const cors = require("cors"); // Import cors
+const { errors } = require("celebrate");
+const { requestLogger, errorLogger } = require("./middlewares/logger");
+const errorHandler = require("./middlewares/errorHandler");
 const { NOT_FOUND } = require("./utils/errors");
 const mainRouter = require("./routes");
 
@@ -18,6 +22,9 @@ mongoose
 app.use(express.json());
 app.use(cors());
 
+// Request logger - before all route handlers
+app.use(requestLogger);
+
 app.use("/", mainRouter);
 
 // Handle 404 errors for non-existent routes
@@ -28,6 +35,15 @@ app.use((req, res) => {
     message: "Requested resource not found",
   });
 });
+
+// Error logger - must come after routes and before error handlers
+app.use(errorLogger);
+
+// Celebrate error handler
+app.use(errors());
+
+// Central error handler
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
