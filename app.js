@@ -5,7 +5,7 @@ const cors = require("cors"); // Import cors
 const { errors } = require("celebrate");
 const { requestLogger, errorLogger } = require("./middlewares/logger");
 const errorHandler = require("./middlewares/errorHandler");
-const { NOT_FOUND } = require("./utils/errors");
+const { NotFoundError } = require("./errors");
 const mainRouter = require("./routes");
 
 const app = express(); //  Creates an Express application instance
@@ -35,12 +35,8 @@ app.get("/crash-test", () => {
 app.use("/", mainRouter);
 
 // Handle 404 errors for non-existent routes
-app.use((req, res) => {
-  // Middleware for handling non-existent routes
-  res.status(NOT_FOUND).send({
-    // Send 404 status code and error message
-    message: "Requested resource not found",
-  });
+app.use((req, res, next) => {
+  next(new NotFoundError("Requested resource not found"));
 });
 
 // Error logger - must come after routes and before error handlers

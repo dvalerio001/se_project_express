@@ -2,6 +2,11 @@
 
 This back-end project is the API for the WTWR application. It allows users to create and manage clothing items based on weather conditions, making it easier for users to decide what to wear.
 
+## Deployed Applications
+
+- Frontend: https://wtwrdv.jumpingcrab.com
+- Backend API: https://api.wtwrdv.jumpingcrab.com
+
 ## Functionality
 
 The API provides the following features:
