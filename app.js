@@ -25,6 +25,13 @@ app.use(cors());
 // Request logger - before all route handlers
 app.use(requestLogger);
 
+// remove after review
+app.get("/crash-test", () => {
+  setTimeout(() => {
+    throw new Error("Server will crash now");
+  }, 0);
+});
+
 app.use("/", mainRouter);
 
 // Handle 404 errors for non-existent routes
