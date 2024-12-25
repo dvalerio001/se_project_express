@@ -55,7 +55,7 @@ const login = (req, res, next) => {
 
   // Check for missing required fields
   if (!email || !password) {
-    throw new BadRequestError("Email and password are required");
+    return next(new BadRequestError("Email and password are required"));
   }
 
   User.findUserByCredentials(email, password)
@@ -66,7 +66,7 @@ const login = (req, res, next) => {
       res.send({ token });
     })
     .catch(() => {
-      throw new UnauthorizedError("Incorrect email or password");
+      next(new UnauthorizedError("Incorrect email or password"));
     });
 };
 
